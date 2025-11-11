@@ -1,0 +1,42 @@
+version: 0.1
+log:
+  accesslog:
+    disabled: true
+  level: debug
+  formatter: text
+  fields:
+    service: registry
+    environment: staging
+storage:
+  filesystem:
+    rootdirectory: /var/lib/registry
+    maxthreads: 100
+  delete:
+    enabled: false
+  redirect:
+    disable: false
+  cache:
+    blobdescriptor: inmemory
+    blobdescriptorsize: 10000
+  maintenance:
+    uploadpurging:
+      enabled: true
+      age: 168h
+      interval: 24h
+      dryrun: false
+    readonly:
+      enabled: false
+#auth:
+#  htpasswd:
+#    realm: basic-realm
+#    path: /opt/config/htpasswd
+http:
+  addr: 0.0.0.0:5000
+  secret: xxxxxxxxx
+  tls:
+    certificate: /opt/config/ssl/crt.pem
+    key: /opt/config/ssl/key.pem
+  headers:
+    X-Content-Type-Options: [nosniff]
+  http2:
+    disabled: false

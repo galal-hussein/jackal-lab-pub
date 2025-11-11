@@ -1,0 +1,52 @@
+#cloud-config
+# vim: syntax=yaml
+# examples:
+# https://cloudinit.readthedocs.io/en/latest/topics/examples.html
+package_update: true
+packages:
+    - qemu-guest-agent
+runcmd:
+ - [ ls, -l, / ]
+ - [ sh, -xc, "echo $(date) ': hello world!'" ]
+ - systemctl start qemu-guest-agent.service
+ssh_pwauth: true
+disable_root: false
+hostname: ${hostname}
+create_hostname_file: true
+chpasswd:
+  list: |
+     root:password
+  expire: false
+ca-certs:
+  trusted:
+  - |
+   -----BEGIN CERTIFICATE-----
+   xxxxxxxxxx
+   -----END CERTIFICATE-----
+write_files:
+  - path: /etc/rancher/rke2/registries.yaml
+    content: |
+      mirrors:
+        docker.io:
+          endpoint:
+            - "https://registry.hgalal.az"
+    owner: 'root:root'
+    permissions: '0644'
+  - path: /etc/rancher/k3s/registries.yaml
+    content: |
+      mirrors:
+        docker.io:
+          endpoint:
+            - "https://registry.hgalal.az"
+    owner: 'root:root'
+    permissions: '0644'
+users:
+  - name: hussein
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    home: /home/hussein
+    shell: /bin/bash
+    lock_passwd: false
+    ssh-authorized-keys:
+    - #add your public ssh key
+final_message: "The system is finally up, after $UPTIME seconds"
