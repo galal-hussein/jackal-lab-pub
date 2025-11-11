@@ -102,6 +102,8 @@ tofu apply -var box=ubuntu_2404 -var num_nodes=5 -var memory=8000 -var cpus=6
 ```
 
 
-Note: 
+Notes: 
 
-> The scripts expects a br0 bridged interface to exist on the host machine, Happy Virtualization!
+> The scripts expect a bridged interface named br0 to exist on the libvirt host. Make sure it’s configured properly before running the scripts, the registry will also require generating your own certs for the registry in registry/config/ssl dir.
+
+🖥️ Happy Virtualization!
